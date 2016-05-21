@@ -10,7 +10,7 @@ import serviceImpl.ExecuteServiceImpl;
 import serviceImpl.IOServiceImpl;
 import serviceImpl.UserServiceImpl;
 
-public class DataRemoteObject extends UnicastRemoteObject implements IOService, UserService {
+public class DataRemoteObject extends UnicastRemoteObject implements IOService, UserService, ExecuteService {
 	/**
 	 * 
 	 */

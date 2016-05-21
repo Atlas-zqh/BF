@@ -23,6 +23,7 @@ import rmi.RemoteHelper;
 public class MainFrame extends JFrame {
 	private JTextArea textArea;
 	private JTextArea resultArea;
+	private JTextArea paramsArea;
 	private final int Height = 630;
 	private final int Width = 800;
 
@@ -84,7 +85,7 @@ public class MainFrame extends JFrame {
 		saveMenuItem.addActionListener(new MenuItemActionListener());
 		runMenuItem.addActionListener(new MenuItemActionListener());
 		executeMenuItem.addActionListener(new MenuItemActionListener());
-		
+
 		account.addActionListener(new LoginActionListener());
 
 		// Code Area
@@ -99,12 +100,12 @@ public class MainFrame extends JFrame {
 		panel1.add(scroller);
 
 		// Parameter Area
-		JTextArea numbersArea = new JTextArea(6, 30);
-		numbersArea.setBackground(Color.WHITE);
-		numbersArea.setLineWrap(true);
-		numbersArea.setMargin(new Insets(10, 10, 10, 10));
-		numbersArea.setFont(font);
-		panel2.add(new JScrollPane(numbersArea));
+		paramsArea = new JTextArea(6, 30);
+		paramsArea.setBackground(Color.WHITE);
+		paramsArea.setLineWrap(true);
+		paramsArea.setMargin(new Insets(10, 10, 10, 10));
+		paramsArea.setFont(font);
+		panel2.add(new JScrollPane(paramsArea));
 
 		// Result Area
 		resultArea = new JTextArea(6, 24);
@@ -126,39 +127,57 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
+
+			// Open file
+			// Unfinished
 			if (cmd.equals("Open")) {
-				textArea.setText("Open");
-			} else if (cmd.equals("Save")) {
-				textArea.setText("Save");
-			} else if (cmd.equals("Run")||cmd.equals("Execute")) {
-				resultArea.setText("Hello, result");
+				String content;
+				try {
+					content = RemoteHelper.getInstance().getIOService().readFile("admin", "code");
+					textArea.setText(content);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				// Get params in the paramArea and run them along with the code.
+				// Show result in the resultArea
+			} else if (cmd.equals("Run") || cmd.equals("Execute")) {
+				try {
+					resultArea.setText(RemoteHelper.getInstance().getExecuteService().execute(textArea.getText(),
+							paramsArea.getText()+"\n"));
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
 
 	class SaveActionListener implements ActionListener {
-
+		// Save code into a file
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String code = textArea.getText();
 			try {
 				RemoteHelper.getInstance().getIOService().writeFile(code, "admin", "code");
+				resultArea.setText("Saved!");
 			} catch (RemoteException e1) {
 				e1.printStackTrace();
 			}
 		}
 
 	}
-	
-	class LoginActionListener implements ActionListener{
-		//Login Service
-		
+
+	class LoginActionListener implements ActionListener {
+		// Login Service
+
 		@Override
-		public void actionPerformed(ActionEvent e){
-			JFrame loginFrame=new JFrame("Login");
+		public void actionPerformed(ActionEvent e) {
+			JFrame loginFrame = new JFrame("Login");
 			loginFrame.setSize(300, 236);
-			//Unfinished
+			// Unfinished
 		}
-		
+
 	}
 }
