@@ -1,4 +1,4 @@
-//请不要修改本文件名
+//璇蜂笉瑕佷慨鏀规湰鏂囦欢鍚�
 package serviceImpl;
 
 import java.rmi.RemoteException;
@@ -10,7 +10,7 @@ import service.ExecuteService;
 public class ExecuteServiceImpl implements ExecuteService {
 
 	/**
-	 * 请实现该方法
+	 * 璇峰疄鐜拌鏂规硶
 	 */
 	@Override
 	public String execute(String code, String param) throws RemoteException {
@@ -151,7 +151,13 @@ public class ExecuteServiceImpl implements ExecuteService {
 					continue;
 				}
 				break;
+			case '\0':
+				continue;
+			default:
+				System.out.println("Wrong input!:(");
+				break;
 			}
+
 		}
 		return result;
 	}
