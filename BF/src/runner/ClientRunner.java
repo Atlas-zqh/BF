@@ -1,5 +1,6 @@
 package runner;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -34,7 +35,7 @@ public class ClientRunner {
 		MainFrame mainFrame = new MainFrame();
 	}
 	
-	public void test(){
+	public void test() throws IOException{
 		try {
 			System.out.println(remoteHelper.getUserService().login("admin", "123456a"));
 			System.out.println(remoteHelper.getIOService().writeFile("2", "admin", "testFile"));

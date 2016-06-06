@@ -1,4 +1,3 @@
-//服务器IOService的Stub，内容相同
 package service;
 
 import java.rmi.Remote;

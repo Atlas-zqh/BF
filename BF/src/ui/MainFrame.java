@@ -26,12 +26,13 @@ public class MainFrame extends JFrame {
 	private JTextArea paramsArea;
 	private final int Height = 630;
 	private final int Width = 800;
-
+	JFrame frame = new JFrame("BF Client");
+	
+	
 	private Font font = new Font("TimesNewRoman", Font.PLAIN, 16);
 
 	public MainFrame() {
-		// 创建窗体
-		JFrame frame = new JFrame("BF Client");
+
 		frame.setSize(Width, Height);
 
 		JPanel panel1 = new JPanel();
@@ -75,19 +76,21 @@ public class MainFrame extends JFrame {
 		// Haven't added ActionListners
 		// To be solved: how to add a menu-item when a new version is created
 
-		JMenu account = new JMenu("Login");
+		JMenu account = new JMenu("Account");
 		menuBar.add(account);
 		frame.setJMenuBar(menuBar);
+		
+		JMenuItem login=new JMenuItem("Login");
+		account.add(login);
 
 		newMenuItem.addActionListener(new MenuItemActionListener());
 		openMenuItem.addActionListener(new MenuItemActionListener());
 		saveMenuItem.addActionListener(new SaveActionListener());
-		saveMenuItem.addActionListener(new MenuItemActionListener());
+//		saveMenuItem.addActionListener(new MenuItemActionListener());
 		runMenuItem.addActionListener(new MenuItemActionListener());
 		executeMenuItem.addActionListener(new MenuItemActionListener());
-
-		account.addActionListener(new LoginActionListener());
-
+		login.addActionListener(new LoginActionListener());
+		
 		// Code Area
 		textArea = new JTextArea(16, 58);
 		textArea.setMargin(new Insets(10, 10, 10, 10));
@@ -100,7 +103,7 @@ public class MainFrame extends JFrame {
 		panel1.add(scroller);
 
 		// Parameter Area
-		paramsArea = new JTextArea(6, 30);
+		paramsArea = new JTextArea(4, 30);
 		paramsArea.setBackground(Color.WHITE);
 		paramsArea.setLineWrap(true);
 		paramsArea.setMargin(new Insets(10, 10, 10, 10));
@@ -108,7 +111,7 @@ public class MainFrame extends JFrame {
 		panel2.add(new JScrollPane(paramsArea));
 
 		// Result Area
-		resultArea = new JTextArea(6, 24);
+		resultArea = new JTextArea(4, 24);
 		resultArea.setText("Result");
 		resultArea.setBackground(Color.WHITE);
 		resultArea.setMargin(new Insets(10, 10, 10, 10));
@@ -121,9 +124,7 @@ public class MainFrame extends JFrame {
 	}
 
 	class MenuItemActionListener implements ActionListener {
-		/**
-		 * 子菜单响应事件
-		 */
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
@@ -150,6 +151,8 @@ public class MainFrame extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+			}else if(cmd.equals("New")){
+				textArea.setText("");
 			}
 		}
 	}
@@ -171,13 +174,13 @@ public class MainFrame extends JFrame {
 
 	class LoginActionListener implements ActionListener {
 		// Login Service
-
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JFrame loginFrame = new JFrame("Login");
-			loginFrame.setSize(300, 236);
-			// Unfinished
+			LoginFrame loginFrame=new LoginFrame();
 		}
+		
+		
 
 	}
 }

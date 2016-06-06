@@ -1,5 +1,6 @@
 package rmi;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -44,7 +45,7 @@ public class DataRemoteObject extends UnicastRemoteObject implements IOService, 
 	}
 
 	@Override
-	public boolean login(String username, String password) throws RemoteException {
+	public boolean login(String username, String password) throws RemoteException,IOException {
 		// TODO Auto-generated method stub
 		return userService.login(username, password);
 	}
@@ -53,6 +54,10 @@ public class DataRemoteObject extends UnicastRemoteObject implements IOService, 
 	public boolean logout(String username) throws RemoteException {
 		// TODO Auto-generated method stub
 		return userService.logout(username);
+	}
+	
+	public boolean signup(String username,String password) throws RemoteException,IOException{
+		return userService.signup(username, password);
 	}
 
 	public String execute(String code, String param) throws RemoteException {
