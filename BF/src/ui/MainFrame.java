@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -27,13 +28,15 @@ public class MainFrame extends JFrame {
 	private final int Height = 630;
 	private final int Width = 800;
 	JFrame frame = new JFrame("BF Client");
-	
+	public ImageIcon icon=new ImageIcon("icon/brainicon-small.png");
 	
 	private Font font = new Font("TimesNewRoman", Font.PLAIN, 16);
 
 	public MainFrame() {
 
 		frame.setSize(Width, Height);
+		frame.setIconImage(icon.getImage());
+		
 
 		JPanel panel1 = new JPanel();
 		JPanel panel2 = new JPanel();
@@ -133,6 +136,7 @@ public class MainFrame extends JFrame {
 			// Unfinished
 			if (cmd.equals("Open")) {
 				String content;
+				OpenFileDialog ofd=new OpenFileDialog();
 				try {
 					content = RemoteHelper.getInstance().getIOService().readFile("admin", "code");
 					textArea.setText(content);

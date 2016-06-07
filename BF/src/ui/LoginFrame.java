@@ -1,7 +1,8 @@
 package ui;
 
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,51 +12,93 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import rmi.RemoteHelper;
+
 public class LoginFrame extends JPanel {
 	private static final long serialVersionUID = 1L;
-//	private Image password = new ImageIcon("icon/iconfont-mima.jpg").getImage();
-//	private JLabel password_icon = new JLabel(password);
-//	JPanel panel = new JPanel();
+
 	public JTextField textField;
 	public JPasswordField passwordField;
 	public JButton loginBt;
 	public JButton signupBt;
+
+	public ImageIcon password = new ImageIcon("icon/iconfont-mima-small.png");
+	public ImageIcon user = new ImageIcon("icon/iconfont-yonghu-small.png");
+	public ImageIcon brainfuck = new ImageIcon("icon/brainfuck.png");
+	public ImageIcon login = new ImageIcon("icon/login-small.png");
+	public ImageIcon signup = new ImageIcon("icon/signup-small.png");
+	public ImageIcon icon=new ImageIcon("icon/brainicon-small.png");
+
+	public JLabel password_icon = new JLabel(password);
+	public JLabel user_icon = new JLabel(user);
+	public JLabel logo = new JLabel(brainfuck);
 	
+	public static boolean logined=false;
+	public static boolean signed=false;
+
 	public LoginFrame() {
 		JFrame loginFrame = new JFrame("Login");
 		loginFrame.setSize(450, 370);
-		loginFrame.setLocation(650, 400);
+		loginFrame.setLocation(550, 400);
+		loginFrame.setIconImage(icon.getImage());
 
-		textField=new JTextField("Your username here");
+		textField = new JTextField("Your username here");
 		passwordField = new JPasswordField("");
-		loginBt=new JButton("Login in");
-		signupBt=new JButton("Sign up");
-		
-		textField.setBounds(130, 100, 200, 35);
+		loginBt = new JButton(login);
+		loginBt.setBounds(125, 220, 200, 33);
+		signupBt = new JButton(signup);
+		signupBt.setBounds(125, 265, 200, 33);
 
-		passwordField.setBounds(130, 160, 200, 35);
+		textField.setBounds(110, 100, 250, 35);
+		passwordField.setBounds(110, 160, 250, 35);
+		user_icon.setBounds(55, 90, 52, 52);
+		password_icon.setBounds(49, 150, 60, 60);
+		logo.setBounds(120, 20, 200, 80);
 
-		loginBt.setBounds(150, 210, 150, 30);
-		signupBt.setBounds(150, 250, 150, 30);
-		
 		this.setLayout(null);
 		this.repaint();
-		
+
 		this.add(textField);
 		this.add(passwordField);
 		this.add(loginBt);
 		this.add(signupBt);
-//		panel.add(password_icon);
-//		password_icon.setBounds(0, 0, 50, 50);
+		this.add(user_icon);
+		this.add(password_icon);
+		this.add(logo);
+
 		loginFrame.getContentPane().add(this);
-		
 		loginFrame.setVisible(true);
-		loginFrame.setResizable(true);
-	}
-	
-	public void paintComponents(Graphics g){
-		Image password = new ImageIcon("icon/iconfont-mima.jpg").getImage();
-		g.drawImage(password, 3, 4, this);
+		loginFrame.setResizable(false);
+
+		loginBt.addActionListener(new LogActionListener());
+		signupBt.addActionListener(new SignUpActionListener());
 	}
 
+	public class LogActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			try {
+				logined=RemoteHelper.getInstance().getUserService().login(textField.getText(), new String(passwordField.getPassword()));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}
+	
+	public class SignUpActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			try {
+				signed=RemoteHelper.getInstance().getUserService().signup(textField.getText(), new String(passwordField.getPassword()));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+	}
 }

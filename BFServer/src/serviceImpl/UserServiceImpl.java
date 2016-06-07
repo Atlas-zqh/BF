@@ -10,10 +10,16 @@ import java.rmi.RemoteException;
 import service.UserService;
 
 public class UserServiceImpl  implements UserService{
-	File userInfo=new File("userInfo.txt");
+	File userInfo=new File("userInfo");
 	
 	@Override
 	public boolean login(String username, String password) throws RemoteException,IOException {
+
+		if(!userInfo.exists()){
+			userInfo.createNewFile();
+			System.out.println("CreateNew");
+		}
+		
 		FileReader fr=new FileReader(userInfo);
 		BufferedReader br=new BufferedReader(fr);
 		
@@ -34,7 +40,8 @@ public class UserServiceImpl  implements UserService{
 
 	@Override
 	public boolean signup(String username,String password) throws IOException,RemoteException{
-		FileWriter fw=new FileWriter(userInfo);
+		
+		FileWriter fw=new FileWriter(userInfo,true);
 		FileReader fr=new FileReader(userInfo);
 		BufferedReader br=new BufferedReader(fr);
 		
