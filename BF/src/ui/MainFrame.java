@@ -6,10 +6,12 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.rmi.RemoteException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -70,8 +72,6 @@ public class MainFrame extends JFrame {
 
 		JMenuItem executeMenuItem = new JMenuItem("Execute");
 		runMenu.add(executeMenuItem);
-		// Unfinished
-		// Haven't added ActionListners
 
 		JMenu versionMenu = new JMenu("Version");
 		menuBar.add(versionMenu);
@@ -136,9 +136,14 @@ public class MainFrame extends JFrame {
 			// Unfinished
 			if (cmd.equals("Open")) {
 				String content;
-				OpenFileDialog ofd=new OpenFileDialog();
 				try {
-					content = RemoteHelper.getInstance().getIOService().readFile("admin", "code");
+					JFileChooser jfc=new JFileChooser();
+					jfc.showOpenDialog(null);
+					File f=jfc.getSelectedFile();
+					
+					String[] fileName=f.getName().split("_");
+					
+					content = RemoteHelper.getInstance().getIOService().readFile(fileName[0], fileName[1]);
 					textArea.setText(content);
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block

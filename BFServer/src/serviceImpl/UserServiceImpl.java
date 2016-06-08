@@ -15,10 +15,6 @@ public class UserServiceImpl  implements UserService{
 	@Override
 	public boolean login(String username, String password) throws RemoteException,IOException {
 
-		if(!userInfo.exists()){
-			userInfo.createNewFile();
-			System.out.println("CreateNew");
-		}
 		
 		FileReader fr=new FileReader(userInfo);
 		BufferedReader br=new BufferedReader(fr);
@@ -41,22 +37,29 @@ public class UserServiceImpl  implements UserService{
 	@Override
 	public boolean signup(String username,String password) throws IOException,RemoteException{
 		
+		if(!userInfo.exists()){
+			userInfo.createNewFile();
+		}
+		
 		FileWriter fw=new FileWriter(userInfo,true);
 		FileReader fr=new FileReader(userInfo);
 		BufferedReader br=new BufferedReader(fr);
 		
 		String info=username+"_"+password;
+		
+		String line=null;
+		while((line=br.readLine())!=null){
+			if(line.equals(info)){
+				return false;
+			}
+		
+		}
 		fw.write(info+"\n");
 		fw.flush();
 		fw.close();
 
-		String line=null;
-		while((line=br.readLine())!=null){
-			if(line.equals(info)){
-				return true;
-			}
-		}
-		return false;
+
+		return true;
 	}
 	
 }

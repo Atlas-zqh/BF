@@ -15,9 +15,8 @@ import javax.swing.JTextField;
 import rmi.RemoteHelper;
 
 public class LoginFrame extends JPanel {
-	private static final long serialVersionUID = 1L;
 
-	public JTextField textField;
+	public static JTextField textField;
 	public JPasswordField passwordField;
 	public JButton loginBt;
 	public JButton signupBt;
@@ -33,11 +32,12 @@ public class LoginFrame extends JPanel {
 	public JLabel user_icon = new JLabel(user);
 	public JLabel logo = new JLabel(brainfuck);
 	
+	public JFrame loginFrame = new JFrame("Login");
 	public static boolean logined=false;
 	public static boolean signed=false;
 
 	public LoginFrame() {
-		JFrame loginFrame = new JFrame("Login");
+
 		loginFrame.setSize(450, 370);
 		loginFrame.setLocation(550, 400);
 		loginFrame.setIconImage(icon.getImage());
@@ -94,6 +94,14 @@ public class LoginFrame extends JPanel {
 			// TODO Auto-generated method stub
 			try {
 				signed=RemoteHelper.getInstance().getUserService().signup(textField.getText(), new String(passwordField.getPassword()));
+				if(signed){
+					loginFrame.dispose();
+					SignedFrame sf=new SignedFrame();
+				}else{
+					//已存在用户，signed为false
+					//但是现在似乎不能检查是否已存在用户，
+					//UserService中的signup方法
+				}
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
