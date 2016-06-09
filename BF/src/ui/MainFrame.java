@@ -33,7 +33,22 @@ public class MainFrame extends JFrame {
 	public ImageIcon icon=new ImageIcon("icon/brainicon-small.png");
 	
 	private Font font = new Font("TimesNewRoman", Font.PLAIN, 16);
+	
+	JMenuBar menuBar = new JMenuBar();
+	JMenu fileMenu = new JMenu("File");
+	JMenuItem newMenuItem = new JMenuItem("New");
+	JMenuItem openMenuItem = new JMenuItem("Open");
+	JMenuItem saveMenuItem = new JMenuItem("Save");
+	JMenuItem runMenuItem = new JMenuItem("Run");
 
+	JMenu runMenu = new JMenu("Run");
+	JMenuItem executeMenuItem = new JMenuItem("Execute");
+	
+	JMenu versionMenu = new JMenu("Version");
+	
+	static JMenu account = new JMenu("Account");
+	JMenuItem login=new JMenuItem("Login");
+	
 	public MainFrame() {
 
 		frame.setSize(Width, Height);
@@ -52,38 +67,24 @@ public class MainFrame extends JFrame {
 		frame.getContentPane().add(BorderLayout.EAST, panel3);
 		frame.setResizable(false);
 
-		JMenuBar menuBar = new JMenuBar();
 		menuBar.setMargin(new Insets(5, 5, 5, 5));
-
-		JMenu fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
-
-		JMenuItem newMenuItem = new JMenuItem("New");
 		fileMenu.add(newMenuItem);
-		JMenuItem openMenuItem = new JMenuItem("Open");
 		fileMenu.add(openMenuItem);
-		JMenuItem saveMenuItem = new JMenuItem("Save");
 		fileMenu.add(saveMenuItem);
-		JMenuItem runMenuItem = new JMenuItem("Run");
 		fileMenu.add(runMenuItem);
 
-		JMenu runMenu = new JMenu("Run");
 		menuBar.add(runMenu);
-
-		JMenuItem executeMenuItem = new JMenuItem("Execute");
 		runMenu.add(executeMenuItem);
 
-		JMenu versionMenu = new JMenu("Version");
 		menuBar.add(versionMenu);
 		// Unfinished
 		// Haven't added ActionListners
 		// To be solved: how to add a menu-item when a new version is created
 
-		JMenu account = new JMenu("Account");
 		menuBar.add(account);
 		frame.setJMenuBar(menuBar);
 		
-		JMenuItem login=new JMenuItem("Login");
 		account.add(login);
 
 		newMenuItem.addActionListener(new MenuItemActionListener());
@@ -184,12 +185,11 @@ public class MainFrame extends JFrame {
 	class LoginActionListener implements ActionListener {
 		// Login Service
 		
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LoginFrame loginFrame=new LoginFrame();
-		}
-		
-		
 
+		}
 	}
 }

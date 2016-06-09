@@ -80,10 +80,16 @@ public class LoginFrame extends JPanel {
 			// TODO Auto-generated method stub
 			try {
 				logined=RemoteHelper.getInstance().getUserService().login(textField.getText(), new String(passwordField.getPassword()));
+				if(logined){
+					loginFrame.dispose();
+				}else{
+					LoginErrorFrame lef=new LoginErrorFrame();
+				}
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			MainFrame.account.setText("User : "+textField.getText());
 		}
 	}
 	
@@ -97,16 +103,25 @@ public class LoginFrame extends JPanel {
 				if(signed){
 					loginFrame.dispose();
 					SignedFrame sf=new SignedFrame();
+					logined=true;
+					LoginFrame.changeNameInAccountMenu(logined);
 				}else{
 					//已存在用户，signed为false
-					//但是现在似乎不能检查是否已存在用户，
-					//UserService中的signup方法
+					UserExistedFrame uef=new UserExistedFrame();
 				}
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
 		}
 		
+	}
+	
+	public static void changeNameInAccountMenu(boolean logined){
+		if(LoginFrame.logined){
+			MainFrame.account.remove(0);
+			MainFrame.account.setText("User : "+textField.getText());
+		}
 	}
 }

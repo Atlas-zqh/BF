@@ -10,36 +10,32 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class SignedFrame extends JPanel{
-
+public class LoginErrorFrame extends JPanel{
 	public ImageIcon icon=new ImageIcon("icon/brainicon-small.png");
-	public ImageIcon confirmImg=new ImageIcon("icon/confirm.png");
+	public ImageIcon confirmImg=new ImageIcon("icon/tryagain.png");
 	public JFrame notice=new JFrame("Notification");
 	private Font font = new Font("TimesNewRoman", Font.PLAIN, 16);
 	
-	public SignedFrame(){
+	public LoginErrorFrame(){
 
 		notice.setSize(350, 270);
 		notice.setLocation(600, 470);
 		notice.setIconImage(icon.getImage());
-		
-		JLabel sorryLabel=new JLabel("Sorry , username :",JLabel.CENTER );
-		sorryLabel.setFont(font);
-		sorryLabel.setBounds(70, 35, 200,30);
-		JLabel helloAndName=new JLabel("Hello , "+LoginFrame.textField.getText()+" !",JLabel.CENTER);
-		helloAndName.setFont(font);
-		helloAndName.setBounds(70, 50, 200,30);
-		JLabel rememberPassword=new JLabel("Please remember your password !");
-		rememberPassword.setFont(font);
-		rememberPassword.setBounds(50,90,300,30);
+		JLabel noUserLabel=new JLabel("The user doesn't exist !",JLabel.CENTER);
+		noUserLabel.setFont(font);
+		noUserLabel.setBounds(70, 55, 200, 30);
+		JLabel wrongPasswordLabel=new JLabel("or you may enter a WRONG password !",JLabel.CENTER);
+		wrongPasswordLabel.setFont(font);
+		wrongPasswordLabel.setBounds(70, 100, 200, 30);
+
 		
 		JButton confirm=new JButton(confirmImg);
 		confirm.setBounds(98, 150, 150, 33);
 		
 		this.setLayout(null);
 		this.repaint();
-		this.add(helloAndName);
-		this.add(rememberPassword);
+		this.add(noUserLabel);
+		this.add(wrongPasswordLabel);
 		this.add(confirm);
 		
 		notice.getContentPane().add(this);
