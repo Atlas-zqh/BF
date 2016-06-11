@@ -47,7 +47,8 @@ public class MainFrame extends JFrame {
 	JMenu versionMenu = new JMenu("Version");
 	
 	static JMenu account = new JMenu("Account");
-	JMenuItem login=new JMenuItem("Login");
+	static JMenuItem login=new JMenuItem("Login");
+	static JMenuItem logout = new JMenuItem("Log out");
 	
 	public MainFrame() {
 
@@ -86,6 +87,8 @@ public class MainFrame extends JFrame {
 		frame.setJMenuBar(menuBar);
 		
 		account.add(login);
+		account.add(logout);
+		logout.setVisible(false);
 
 		newMenuItem.addActionListener(new MenuItemActionListener());
 		openMenuItem.addActionListener(new MenuItemActionListener());
@@ -94,6 +97,7 @@ public class MainFrame extends JFrame {
 		runMenuItem.addActionListener(new MenuItemActionListener());
 		executeMenuItem.addActionListener(new MenuItemActionListener());
 		login.addActionListener(new LoginActionListener());
+		logout.addActionListener(new LogoutActionListener());
 		
 		// Code Area
 		textArea = new JTextArea(16, 58);
@@ -189,7 +193,35 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LoginFrame loginFrame=new LoginFrame();
-
+//			if(loginFrame.logined){
+////				account.removeAll();
+//				setVisible(false);
+//				.setVisible(true);
+//				.setText("User : "+LoginFrame..getText());
+//				account.add(logout);
+//				logout.addActionListener(new LogoutActionListener());
+			}
 		}
+	
+	
+	class LogoutActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+
+			try {
+				LoginFrame.logined=!RemoteHelper.getInstance().getUserService().logout(LoginFrame.textField.getText());
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			account.setText("Account");
+			login.setVisible(true);
+			logout.setVisible(false);
+//			account.removeAll();
+//			account.add(login);
+		}
+		
 	}
 }

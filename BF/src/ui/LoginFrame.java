@@ -3,11 +3,13 @@ package ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -26,15 +28,16 @@ public class LoginFrame extends JPanel {
 	public ImageIcon brainfuck = new ImageIcon("icon/brainfuck.png");
 	public ImageIcon login = new ImageIcon("icon/login-small.png");
 	public ImageIcon signup = new ImageIcon("icon/signup-small.png");
-	public ImageIcon icon=new ImageIcon("icon/brainicon-small.png");
+	public ImageIcon icon = new ImageIcon("icon/brainicon-small.png");
+//	public static JMenuItem logout = new JMenuItem("Log out");
 
 	public JLabel password_icon = new JLabel(password);
 	public JLabel user_icon = new JLabel(user);
 	public JLabel logo = new JLabel(brainfuck);
-	
+
 	public JFrame loginFrame = new JFrame("Login");
-	public static boolean logined=false;
-	public static boolean signed=false;
+	public static boolean logined = false;
+	public static boolean signed = false;
 
 	public LoginFrame() {
 
@@ -74,54 +77,71 @@ public class LoginFrame extends JPanel {
 		signupBt.addActionListener(new SignUpActionListener());
 	}
 
+	// public static void changeNameInAccountMenu(boolean logined){
+	// if(logined){
+	// MainFrame.account.remove(0);
+	// MainFrame.account.setText("User : "+textField.getText());
+	// MainFrame.account.add(logout);
+	// logout.addActionListener(new LogoutActionListener());
+	// }
+	// }
+
+	// public static void changeBack(boolean logined){
+	// if(!logined){
+	// MainFrame.account.remove(0);
+	// MainFrame.account.setText("User : "+textField.getText());
+	// }
+	// }
+
 	public class LogActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			try {
-				logined=RemoteHelper.getInstance().getUserService().login(textField.getText(), new String(passwordField.getPassword()));
-				if(logined){
+				logined = RemoteHelper.getInstance().getUserService().login(textField.getText(),
+						new String(passwordField.getPassword()));
+				if (logined) {
 					loginFrame.dispose();
-				}else{
-					LoginErrorFrame lef=new LoginErrorFrame();
+					if(logined){
+//						account.removeAll();
+						MainFrame.login.setVisible(false);
+						MainFrame.logout.setVisible(true);
+						MainFrame.account.setText("User : "+LoginFrame.textField.getText());}
+				} else {
+					LoginErrorFrame lef = new LoginErrorFrame();
 				}
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			MainFrame.account.setText("User : "+textField.getText());
+			// MainFrame.account.setText("User : "+textField.getText());
 		}
 	}
-	
-	public class SignUpActionListener implements ActionListener{
+
+	public class SignUpActionListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			try {
-				signed=RemoteHelper.getInstance().getUserService().signup(textField.getText(), new String(passwordField.getPassword()));
-				if(signed){
+				signed = RemoteHelper.getInstance().getUserService().signup(textField.getText(),
+						new String(passwordField.getPassword()));
+				if (signed) {
 					loginFrame.dispose();
-					SignedFrame sf=new SignedFrame();
-					logined=true;
-					LoginFrame.changeNameInAccountMenu(logined);
-				}else{
-					//已存在用户，signed为false
-					UserExistedFrame uef=new UserExistedFrame();
+					SignedFrame sf = new SignedFrame();
+					logined = true;
+					// LoginFrame.changeNameInAccountMenu(logined);
+				} else {
+					// 已存在用户，signed为false
+					UserExistedFrame uef = new UserExistedFrame();
 				}
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 		}
-		
+
 	}
-	
-	public static void changeNameInAccountMenu(boolean logined){
-		if(LoginFrame.logined){
-			MainFrame.account.remove(0);
-			MainFrame.account.setText("User : "+textField.getText());
-		}
-	}
+
 }
