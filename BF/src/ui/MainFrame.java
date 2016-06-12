@@ -151,7 +151,6 @@ public class MainFrame extends JFrame {
 					content = RemoteHelper.getInstance().getIOService().readFile(fileName[0], fileName[1]);
 					textArea.setText(content);
 				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
@@ -162,7 +161,6 @@ public class MainFrame extends JFrame {
 					resultArea.setText(RemoteHelper.getInstance().getExecuteService().execute(textArea.getText(),
 							paramsArea.getText()+"\n"));
 				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}else if(cmd.equals("New")){
@@ -172,56 +170,43 @@ public class MainFrame extends JFrame {
 	}
 
 	class SaveActionListener implements ActionListener {
-		// Save code into a file
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String code = textArea.getText();
 			try {
-				RemoteHelper.getInstance().getIOService().writeFile(code, "admin", "code");
-				resultArea.setText("Saved!");
+				if(LoginFrame.logined){
+				JFileChooser jfc=new JFileChooser();
+				jfc.showSaveDialog(null);
+				RemoteHelper.getInstance().getIOService().writeFile(code, "admin", jfc.getSelectedFile().getName());
+				resultArea.setText("Saved!");}
+				else{
+					NotLoginFrame nlf=new NotLoginFrame();
+				}
 			} catch (RemoteException e1) {
 				e1.printStackTrace();
 			}
 		}
-
 	}
 
 	class LoginActionListener implements ActionListener {
-		// Login Service
-		
-		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LoginFrame loginFrame=new LoginFrame();
-//			if(loginFrame.logined){
-////				account.removeAll();
-//				setVisible(false);
-//				.setVisible(true);
-//				.setText("User : "+LoginFrame..getText());
-//				account.add(logout);
-//				logout.addActionListener(new LogoutActionListener());
 			}
 		}
 	
 	
 	class LogoutActionListener implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-
 			try {
 				LoginFrame.logined=!RemoteHelper.getInstance().getUserService().logout(LoginFrame.textField.getText());
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			account.setText("Account");
 			login.setVisible(true);
 			logout.setVisible(false);
-//			account.removeAll();
-//			account.add(login);
-		}
-		
+		}	
 	}
 }
