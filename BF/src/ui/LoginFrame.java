@@ -96,6 +96,9 @@ public class LoginFrame extends JPanel {
 	public class LogActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if(logined){
+				MainFrame.account.setText("User : "+LoginFrame.textField.getText());
+			}
 			// TODO Auto-generated method stub
 			try {
 				logined = RemoteHelper.getInstance().getUserService().login(textField.getText(),

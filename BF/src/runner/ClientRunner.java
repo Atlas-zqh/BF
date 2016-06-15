@@ -35,14 +35,14 @@ public class ClientRunner {
 		MainFrame mainFrame = new MainFrame();
 	}
 	
-	public void test() throws IOException{
-		try {
-			System.out.println(remoteHelper.getUserService().login("admin", "123456a"));
-			System.out.println(remoteHelper.getIOService().writeFile("2", "admin", "testFile"));
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-	}
+//	public void test() throws IOException{
+//		try {
+//			System.out.println(remoteHelper.getUserService().login("admin", "123456a"));
+//			System.out.println(remoteHelper.getIOService().writeFile("2", "admin", "testFile"));
+//		} catch (RemoteException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public static void main(String[] args){
 		ClientRunner cr = new ClientRunner();
