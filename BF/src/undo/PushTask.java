@@ -9,7 +9,13 @@ public class PushTask extends TimerTask{
 	
 	@Override
 	public void run() {
-		currentCode=MainFrame.textArea.getText();
+		if(MainFrame.textArea.getText()!=""){
+			
+		
+		currentCode=MainFrame.textArea.getText();}
+		else{
+			currentCode="";
+		}
 		// TODO Auto-generated method stub
 		MainFrame.undomanager.addNew(currentCode);
 //		System.out.println(currentCode);

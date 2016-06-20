@@ -55,8 +55,7 @@ public class MainFrame extends JFrame {
 	JMenuItem runMenuItem = new JMenuItem("Run(R)", KeyEvent.VK_R);
 	JMenuItem exitMenuItem = new JMenuItem("Exit(X)", KeyEvent.VK_X);
 
-	JMenu runMenu = new JMenu("Run");
-	JMenuItem executeMenuItem = new JMenuItem("Execute(R)");
+	JMenu runMenu = new JMenu("Edit");
 	JMenuItem undoMenuItem=new JMenuItem("Undo");
 	JMenuItem redoMenuItem=new JMenuItem("Redo");
 
@@ -65,9 +64,10 @@ public class MainFrame extends JFrame {
 	static JMenu account = new JMenu("Account");
 	static JMenuItem login = new JMenuItem("Login");
 	static JMenuItem logout = new JMenuItem("Log out");
+	
 
 	public MainFrame() {
-		timer.schedule(pt, 3000,3000);
+		timer.schedule(pt, 500,500);
 
 		// fileMenu.setMnemonic(KeyEvent.VK_X);
 		frame.setSize(Width, Height);
@@ -100,7 +100,6 @@ public class MainFrame extends JFrame {
 		fileMenu.add(exitMenuItem);
 
 		menuBar.add(runMenu);
-		runMenu.add(executeMenuItem);
 		runMenu.add(undoMenuItem);
 		runMenu.add(redoMenuItem);
 
@@ -134,7 +133,6 @@ public class MainFrame extends JFrame {
 		// saveMenuItem.addActionListener(new MenuItemActionListener());
 		runMenuItem.addActionListener(new MenuItemActionListener());
 		exitMenuItem.addActionListener(new ExitActionListener());
-		executeMenuItem.addActionListener(new MenuItemActionListener());
 		undoMenuItem.addActionListener(new UndoActionListener());
 		redoMenuItem.addActionListener(new RedoActionListener());
 		login.addActionListener(new LoginActionListener());
@@ -143,6 +141,7 @@ public class MainFrame extends JFrame {
 
 		// Code Area
 		textArea = new JTextArea(16, 58);
+		textArea.setText("");
 		textArea.setMargin(new Insets(10, 10, 10, 10));
 		textArea.setBackground(Color.WHITE);
 		textArea.setLineWrap(true);
@@ -179,7 +178,7 @@ public class MainFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
 
-			if (cmd.equals("Run(R)") || cmd.equals("Execute(R)")) {
+			if (cmd.equals("Run(R)")) {
 				try {
 					resultArea.setText(RemoteHelper.getInstance().getExecuteService().execute(textArea.getText(),
 							paramsArea.getText() + "\n"));
@@ -311,8 +310,11 @@ public class MainFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if(!undomanager.undoQueue.isEmpty()){
+				textArea.setText(undomanager.redo());
+			}
 			// TODO Auto-generated method stub
-			textArea.setText(undomanager.redo());
+
 		}
 		
 	}
