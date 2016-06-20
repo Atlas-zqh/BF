@@ -24,9 +24,9 @@ public class LoginErrorFrame extends JPanel{
 		JLabel noUserLabel=new JLabel("The user doesn't exist !",JLabel.CENTER);
 		noUserLabel.setFont(font);
 		noUserLabel.setBounds(70, 55, 200, 30);
-		JLabel wrongPasswordLabel=new JLabel("or you may enter a WRONG password !",JLabel.CENTER);
+		JLabel wrongPasswordLabel=new JLabel("or you entered a WRONG password !",JLabel.CENTER);
 		wrongPasswordLabel.setFont(font);
-		wrongPasswordLabel.setBounds(70, 100, 200, 30);
+		wrongPasswordLabel.setBounds(30, 100, 300, 30);
 
 		
 		JButton confirm=new JButton(confirmImg);

@@ -16,7 +16,7 @@ public class IOServiceImpl implements IOService {
 
 	@Override
 	public boolean writeFile(String file, String userId, String fileName) {
-		File f = new File(userId + "_" + fileName+".txt");
+		File f = new File("F:\\Workspace\\BFServer\\"+userId+"\\"+userId + "_" + fileName+".txt");
 		IOServiceImpl.createHistory(file, userId, fileName);
 		try {
 			FileWriter fw = new FileWriter(f, false);
@@ -32,8 +32,7 @@ public class IOServiceImpl implements IOService {
 
 	@Override
 	public String readFile(String userId, String fileName) {
-		// TODO Auto-generated method stub
-		File f = new File(userId + "_" + fileName+".txt");
+		File f = new File("F:\\Workspace\\BFServer\\"+userId+"\\"+userId + "_" + fileName+".txt");
 		String content = "";
 
 		try {
@@ -61,7 +60,7 @@ public class IOServiceImpl implements IOService {
 	@Override
 	public String[] readFileList(String userId,String fileName) {
 		// TODO Auto-generated method stub
-		File history=new File(userId+"_"+fileName+"_history");
+		File history=new File("F:\\Workspace\\BFServer\\"+userId+"\\"+userId+"_"+fileName+"_history");
 		ArrayList<String> versions=new ArrayList<String>();
 		String content="";
 
@@ -93,7 +92,7 @@ public class IOServiceImpl implements IOService {
 
 
 	public static boolean createHistory(String file, String userId, String fileName) {
-		File history = new File(userId + "_" + fileName + "_history");
+		File history = new File("F:\\Workspace\\BFServer\\"+userId+"\\"+userId + "_" + fileName + "_history");
 
 		try {
 			FileWriter fw = new FileWriter(history, true);
@@ -113,7 +112,7 @@ public class IOServiceImpl implements IOService {
 
 	@Override
 	public String[] getVersionContent(String userId,String fileName){
-		File history=new File(userId+"_"+fileName+"_history");
+		File history=new File("F:\\Workspace\\BFServer\\"+userId+"\\"+userId+"_"+fileName+"_history");
 		ArrayList<String> versions=new ArrayList<String>();
 		String content="";
 

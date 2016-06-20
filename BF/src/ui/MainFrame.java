@@ -37,9 +37,11 @@ public class MainFrame extends JFrame {
 	public ImageIcon icon = new ImageIcon("icon/brainicon-small.png");
 
 	private Font font = new Font("TimesNewRoman", Font.PLAIN, 16);
+	private Font menuFont=new Font("TimesNewRoman",Font.PLAIN,14);
 
 	JMenuBar menuBar = new JMenuBar();
 	JMenu fileMenu = new JMenu("File");
+
 	JMenuItem newMenuItem = new JMenuItem("New(N)", KeyEvent.VK_N);
 	JMenuItem openMenuItem = new JMenuItem("Open(O)", KeyEvent.VK_O);
 	JMenuItem saveMenuItem = new JMenuItem("Save(S)", KeyEvent.VK_S);
@@ -57,8 +59,15 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() {
 
+		// fileMenu.setMnemonic(KeyEvent.VK_X);
 		frame.setSize(Width, Height);
 		frame.setIconImage(icon.getImage());
+		
+		fileMenu.setFont(menuFont);
+		runMenu.setFont(menuFont);
+		versionMenu.setFont(menuFont);
+		account.setFont(menuFont);
+		
 
 		JPanel panel1 = new JPanel();
 		JPanel panel2 = new JPanel();
@@ -96,7 +105,7 @@ public class MainFrame extends JFrame {
 		logout.setVisible(false);
 
 		// 添加快捷键
-		newMenuItem.setAccelerator(KeyStroke.getKeyStroke('N', InputEvent.CTRL_MASK));
+		newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 		newMenuItem.setDisplayedMnemonicIndex(4);
 		openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		openMenuItem.setDisplayedMnemonicIndex(5);
@@ -104,7 +113,7 @@ public class MainFrame extends JFrame {
 		saveMenuItem.setDisplayedMnemonicIndex(5);
 		runMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
 		runMenuItem.setDisplayedMnemonicIndex(4);
-		exitMenuItem.setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.CTRL_MASK));
+		exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
 		exitMenuItem.setDisplayedMnemonicIndex(5);
 
 		newMenuItem.addActionListener(new MenuItemActionListener());
@@ -177,9 +186,11 @@ public class MainFrame extends JFrame {
 			try {
 				if (LoginFrame.logined) {
 					JFileChooser jfc = new JFileChooser();
+					jfc.setCurrentDirectory(new File("F:\\Workspace\\BFServer\\" + LoginFrame.textField.getText()));
 					jfc.setFileFilter(new UserTxtFileFilter());
 					jfc.showSaveDialog(null);
-					RemoteHelper.getInstance().getIOService().writeFile(code, LoginFrame.textField.getText(), jfc.getSelectedFile().getName());
+					RemoteHelper.getInstance().getIOService().writeFile(code, LoginFrame.textField.getText(),
+							jfc.getSelectedFile().getName());
 					resultArea.setText("Saved!");
 				} else {
 					NotLoginFrame nlf = new NotLoginFrame();
@@ -228,41 +239,41 @@ public class MainFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 
 			String content;
-			ArrayList<JMenuItem> versions= new ArrayList<JMenuItem>();
-			
+			ArrayList<JMenuItem> versions = new ArrayList<JMenuItem>();
+
 			try {
 				JFileChooser jfc = new JFileChooser();
 				jfc.setFileFilter(new UserTxtFileFilter());
+				jfc.setCurrentDirectory(new File("F:\\Workspace\\BFServer\\" + LoginFrame.textField.getText()));
 				jfc.showOpenDialog(null);
 				File f = jfc.getSelectedFile();
 
 				String[] file = f.getName().split("_");
-				String userId=file[0];
-				String fileName=file[1].substring(0, file[1].length()-4);//除去.txt
+				String userId = file[0];
+				String fileName = file[1].substring(0, file[1].length() - 4);// 除去.txt
 				content = RemoteHelper.getInstance().getIOService().readFile(userId, fileName);
-				String[] versionInfo=RemoteHelper.getInstance().getIOService().readFileList(userId, fileName);
-				String[] versionContent=RemoteHelper.getInstance().getIOService().getVersionContent(userId, fileName);
-				
-				for(int i=0;i<versionInfo.length;i++){
+				String[] versionInfo = RemoteHelper.getInstance().getIOService().readFileList(userId, fileName);
+				String[] versionContent = RemoteHelper.getInstance().getIOService().getVersionContent(userId, fileName);
+				versionMenu.removeAll();
+				for (int i = 0; i < versionInfo.length; i++) {
 					versions.add(new JMenuItem(versionInfo[i]));
 				}
-				for(int j=0;j<versionInfo.length;j++){
+				for (int j = 0; j < versionInfo.length; j++) {
 					versionMenu.add(versions.get(j));
 				}
-				
-				for(int k=0;k<versionInfo.length;k++){
-					String tempContent=versionContent[k];
-					versions.get(k).addActionListener(new ActionListener(){
+
+				for (int k = 0; k < versionInfo.length; k++) {
+					String tempContent = versionContent[k];
+					versions.get(k).addActionListener(new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							// TODO Auto-generated method stub
 							textArea.setText(tempContent);
 						}
-						
 					});
 				}
-				
+
 				textArea.setText(content);
 			} catch (RemoteException e1) {
 				e1.printStackTrace();

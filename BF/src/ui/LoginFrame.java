@@ -133,6 +133,9 @@ public class LoginFrame extends JPanel {
 					loginFrame.dispose();
 					SignedFrame sf = new SignedFrame();
 					logined = true;
+					MainFrame.login.setVisible(false);
+					MainFrame.logout.setVisible(true);
+					MainFrame.account.setText("User : "+LoginFrame.textField.getText());
 					// LoginFrame.changeNameInAccountMenu(logined);
 				} else {
 					// 已存在用户，signed为false

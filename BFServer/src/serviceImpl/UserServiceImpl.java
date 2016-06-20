@@ -41,6 +41,9 @@ public class UserServiceImpl  implements UserService{
 			userInfo.createNewFile();
 		}
 		
+		File userFile=new File("F:\\Workspace\\BFServer\\"+username);
+		boolean k=userFile.mkdir();
+		System.out.println(k);
 		FileWriter fw=new FileWriter(userInfo,true);
 		FileReader fr=new FileReader(userInfo);
 		BufferedReader br=new BufferedReader(fr);
