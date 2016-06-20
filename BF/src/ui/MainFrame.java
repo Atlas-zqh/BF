@@ -3,6 +3,7 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import java.util.Timer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -31,10 +33,10 @@ import undo.PushTask;
 import undo.UndoManager;
 
 public class MainFrame extends JFrame {
-	public static UndoManager undomanager=new UndoManager();;
-	PushTask pt=new PushTask();
-	Timer timer=new Timer();
-	
+	public static UndoManager undomanager = new UndoManager();;
+	PushTask pt = new PushTask();
+	Timer timer = new Timer();
+
 	public static JTextArea textArea;
 	private JTextArea resultArea;
 	private JTextArea paramsArea;
@@ -44,7 +46,7 @@ public class MainFrame extends JFrame {
 	public ImageIcon icon = new ImageIcon("icon/brainicon-small.png");
 
 	private Font font = new Font("TimesNewRoman", Font.PLAIN, 16);
-	private Font menuFont=new Font("TimesNewRoman",Font.PLAIN,14);
+	private Font menuFont = new Font("TimesNewRoman", Font.PLAIN, 14);
 
 	JMenuBar menuBar = new JMenuBar();
 	JMenu fileMenu = new JMenu("File");
@@ -56,30 +58,34 @@ public class MainFrame extends JFrame {
 	JMenuItem exitMenuItem = new JMenuItem("Exit(X)", KeyEvent.VK_X);
 
 	JMenu runMenu = new JMenu("Edit");
-	JMenuItem undoMenuItem=new JMenuItem("Undo");
-	JMenuItem redoMenuItem=new JMenuItem("Redo");
+	JMenuItem undoMenuItem = new JMenuItem("Undo");
+	JMenuItem redoMenuItem = new JMenuItem("Redo");
 
 	static JMenu versionMenu = new JMenu("Version");
+
+	JMenu themeMenu = new JMenu("Theme");
+	JMenuItem oldman = new JMenuItem("Old Man");
+	JMenuItem defaultTheme = new JMenuItem("Default(Grey)");
+	JMenuItem angelababy = new JMenuItem("Angelababy");
+	JMenuItem green = new JMenuItem("Default(Green)");
+	JMenuItem blue = new JMenuItem("Default(Blue)");
 
 	static JMenu account = new JMenu("Account");
 	static JMenuItem login = new JMenuItem("Login");
 	static JMenuItem logout = new JMenuItem("Log out");
-	
 
 	public MainFrame() {
-		timer.schedule(pt, 500,500);
+		timer.schedule(pt, 500, 500);
 
-		// fileMenu.setMnemonic(KeyEvent.VK_X);
 		frame.setSize(Width, Height);
 		frame.setIconImage(icon.getImage());
-		
 		fileMenu.setFont(menuFont);
 		runMenu.setFont(menuFont);
 		versionMenu.setFont(menuFont);
 		account.setFont(menuFont);
-		
+		themeMenu.setFont(menuFont);
 
-		JPanel panel1 = new JPanel();
+		MyJPanel panel1 = new MyJPanel();
 		JPanel panel2 = new JPanel();
 		JPanel panel3 = new JPanel();
 		panel1.setBorder(BorderFactory.createTitledBorder("Code"));
@@ -104,16 +110,6 @@ public class MainFrame extends JFrame {
 		runMenu.add(redoMenuItem);
 
 		menuBar.add(versionMenu);
-		// Unfinished
-		// Haven't added ActionListners
-		// To be solved: how to add a menu-item when a new version is created
-
-		menuBar.add(account);
-		frame.setJMenuBar(menuBar);
-
-		account.add(login);
-		account.add(logout);
-		logout.setVisible(false);
 
 		// 添加快捷键
 		newMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
@@ -138,15 +134,19 @@ public class MainFrame extends JFrame {
 		login.addActionListener(new LoginActionListener());
 		logout.addActionListener(new LogoutActionListener());
 
-
 		// Code Area
 		textArea = new JTextArea(16, 58);
 		textArea.setText("");
+		textArea.setOpaque(false);
 		textArea.setMargin(new Insets(10, 10, 10, 10));
-		textArea.setBackground(Color.WHITE);
+		// textArea.setBackground(Color.WHITE);
 		textArea.setLineWrap(true);
 		textArea.setFont(font);
+		textArea.setBackground(null);
+		textArea.setForeground(Color.BLACK);
 		JScrollPane scroller = new JScrollPane(textArea);
+		scroller.setOpaque(false);
+		scroller.getViewport().setOpaque(false);
 		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		panel1.add(scroller);
@@ -166,6 +166,63 @@ public class MainFrame extends JFrame {
 		resultArea.setMargin(new Insets(10, 10, 10, 10));
 		resultArea.setFont(font);
 		panel3.add(new JScrollPane(resultArea));
+
+		// Theme settings
+		menuBar.add(themeMenu);
+
+		themeMenu.add(defaultTheme);
+		defaultTheme.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panel1.returnToDefault();
+				textArea.setForeground(Color.BLACK);
+			}
+		});
+
+		themeMenu.add(blue);
+		blue.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				panel1.changeTheme("background/default-blue.jpg");
+				textArea.setForeground(Color.BLACK);
+			}
+		});
+
+		themeMenu.add(green);
+		green.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				panel1.changeTheme("background/default-green.jpg");
+				textArea.setForeground(Color.BLACK);
+			}
+		});
+
+		themeMenu.add(oldman);
+		oldman.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				panel1.changeTheme("background/oldman.jpg");
+				textArea.setForeground(Color.DARK_GRAY);
+			}
+		});
+
+		themeMenu.add(angelababy);
+		angelababy.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				panel1.changeTheme("background/angelababy.jpg");
+				textArea.setForeground(Color.WHITE);
+			}
+
+		});
+
+		menuBar.add(account);
+		frame.setJMenuBar(menuBar);
+
+		account.add(login);
+		account.add(logout);
+		logout.setVisible(false);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocation(400, 200);
@@ -282,7 +339,6 @@ public class MainFrame extends JFrame {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							// TODO Auto-generated method stub
 							textArea.setText(tempContent);
 						}
 					});
@@ -295,27 +351,23 @@ public class MainFrame extends JFrame {
 		}
 
 	}
-	
-	class UndoActionListener implements ActionListener{
+
+	class UndoActionListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
 			textArea.setText(undomanager.undo());
 		}
-		
+
 	}
-	
-	class RedoActionListener implements ActionListener{
+
+	class RedoActionListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(!undomanager.undoQueue.isEmpty()){
+			if (!undomanager.undoQueue.isEmpty()) {
 				textArea.setText(undomanager.redo());
 			}
-			// TODO Auto-generated method stub
-
 		}
-		
 	}
 }

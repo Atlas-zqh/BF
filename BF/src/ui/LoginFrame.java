@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -29,7 +30,6 @@ public class LoginFrame extends JPanel {
 	public ImageIcon login = new ImageIcon("icon/login-small.png");
 	public ImageIcon signup = new ImageIcon("icon/signup-small.png");
 	public ImageIcon icon = new ImageIcon("icon/brainicon-small.png");
-//	public static JMenuItem logout = new JMenuItem("Log out");
 
 	public JLabel password_icon = new JLabel(password);
 	public JLabel user_icon = new JLabel(user);
@@ -38,6 +38,11 @@ public class LoginFrame extends JPanel {
 	public JFrame loginFrame = new JFrame("Login");
 	public static boolean logined = false;
 	public static boolean signed = false;
+
+	public void paintComponent(Graphics g) {
+		ImageIcon a = new ImageIcon("background/rainbow.jpg");
+		g.drawImage(a.getImage(), 0, 0, null);
+	}
 
 	public LoginFrame() {
 
@@ -77,27 +82,11 @@ public class LoginFrame extends JPanel {
 		signupBt.addActionListener(new SignUpActionListener());
 	}
 
-	// public static void changeNameInAccountMenu(boolean logined){
-	// if(logined){
-	// MainFrame.account.remove(0);
-	// MainFrame.account.setText("User : "+textField.getText());
-	// MainFrame.account.add(logout);
-	// logout.addActionListener(new LogoutActionListener());
-	// }
-	// }
-
-	// public static void changeBack(boolean logined){
-	// if(!logined){
-	// MainFrame.account.remove(0);
-	// MainFrame.account.setText("User : "+textField.getText());
-	// }
-	// }
-
 	public class LogActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(logined){
-				MainFrame.account.setText("User : "+LoginFrame.textField.getText());
+			if (logined) {
+				MainFrame.account.setText("User : " + LoginFrame.textField.getText());
 			}
 			// TODO Auto-generated method stub
 			try {
@@ -105,11 +94,12 @@ public class LoginFrame extends JPanel {
 						new String(passwordField.getPassword()));
 				if (logined) {
 					loginFrame.dispose();
-					if(logined){
-//						account.removeAll();
+					if (logined) {
+						// account.removeAll();
 						MainFrame.login.setVisible(false);
 						MainFrame.logout.setVisible(true);
-						MainFrame.account.setText("User : "+LoginFrame.textField.getText());}
+						MainFrame.account.setText("User : " + LoginFrame.textField.getText());
+					}
 				} else {
 					LoginErrorFrame lef = new LoginErrorFrame();
 				}
@@ -135,7 +125,7 @@ public class LoginFrame extends JPanel {
 					logined = true;
 					MainFrame.login.setVisible(false);
 					MainFrame.logout.setVisible(true);
-					MainFrame.account.setText("User : "+LoginFrame.textField.getText());
+					MainFrame.account.setText("User : " + LoginFrame.textField.getText());
 					// LoginFrame.changeNameInAccountMenu(logined);
 				} else {
 					// 已存在用户，signed为false

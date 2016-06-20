@@ -9,9 +9,6 @@ import service.ExecuteService;
 
 public class ExecuteServiceImpl implements ExecuteService {
 
-	/**
-	 * 请实现该方法
-	 */
 	@Override
 	public String execute(String code, String param) throws RemoteException {
 		// TODO Auto-generated method stub

@@ -16,7 +16,7 @@ public class IOServiceImpl implements IOService {
 
 	@Override
 	public boolean writeFile(String file, String userId, String fileName) {
-		File f = new File("F:\\Workspace\\BFServer\\"+userId+"\\"+userId + "_" + fileName+".txt");
+		File f = new File("F:\\Workspace\\BFServer\\" + userId + "\\" + userId + "_" + fileName + ".txt");
 		IOServiceImpl.createHistory(file, userId, fileName);
 		try {
 			FileWriter fw = new FileWriter(f, false);
@@ -32,7 +32,7 @@ public class IOServiceImpl implements IOService {
 
 	@Override
 	public String readFile(String userId, String fileName) {
-		File f = new File("F:\\Workspace\\BFServer\\"+userId+"\\"+userId + "_" + fileName+".txt");
+		File f = new File("F:\\Workspace\\BFServer\\" + userId + "\\" + userId + "_" + fileName + ".txt");
 		String content = "";
 
 		try {
@@ -58,48 +58,48 @@ public class IOServiceImpl implements IOService {
 	}
 
 	@Override
-	public String[] readFileList(String userId,String fileName) {
+	public String[] readFileList(String userId, String fileName) {
 		// TODO Auto-generated method stub
-		File history=new File("F:\\Workspace\\BFServer\\"+userId+"\\"+userId+"_"+fileName+"_history");
-		ArrayList<String> versions=new ArrayList<String>();
-		String content="";
+		File history = new File("F:\\Workspace\\BFServer\\" + userId + "\\" + userId + "_" + fileName + "_history");
+		ArrayList<String> versions = new ArrayList<String>();
+		String content = "";
 
 		try {
 			FileReader fr = new FileReader(history);
-			BufferedReader br=new BufferedReader(fr);
+			BufferedReader br = new BufferedReader(fr);
 			try {
-				String line=br.readLine();
-				while(line!=null){
-					
-						content=line.substring(0,line.indexOf('/'));
-						versions.add(content);
-						line=br.readLine();
+				String line = br.readLine();
+				while (line != null) {
+
+					content = line.substring(0, line.indexOf('/'));
+					versions.add(content);
+					line = br.readLine();
 
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 
-		int size=versions.size();
-		String[] v=(String[])versions.toArray(new String[size]);
+		int size = versions.size();
+		String[] v = (String[]) versions.toArray(new String[size]);
 
 		return v;
 	}
 
-
 	public static boolean createHistory(String file, String userId, String fileName) {
-		File history = new File("F:\\Workspace\\BFServer\\"+userId+"\\"+userId + "_" + fileName + "_history");
+		File history = new File("F:\\Workspace\\BFServer\\" + userId + "\\" + userId + "_" + fileName + "_history");
 
 		try {
 			FileWriter fw = new FileWriter(history, true);
-			Calendar cal=Calendar.getInstance();
-			fw.write(String.valueOf(cal.get(Calendar.YEAR)) + String.valueOf(cal.get(Calendar.MONTH)+1)
+			Calendar cal = Calendar.getInstance();
+			fw.write(String.valueOf(cal.get(Calendar.YEAR)) + String.valueOf(cal.get(Calendar.MONTH) + 1)
 					+ String.valueOf(cal.get(Calendar.DATE)) + String.valueOf(cal.get(Calendar.HOUR))
-					+ String.valueOf(cal.get(Calendar.MINUTE)) + String.valueOf(cal.get(Calendar.SECOND))+"/"+file+"\n");
+					+ String.valueOf(cal.get(Calendar.MINUTE)) + String.valueOf(cal.get(Calendar.SECOND)) + "/" + file
+					+ "\n");
 			fw.flush();
 			fw.close();
 			return true;
@@ -111,35 +111,35 @@ public class IOServiceImpl implements IOService {
 	}
 
 	@Override
-	public String[] getVersionContent(String userId,String fileName){
-		File history=new File("F:\\Workspace\\BFServer\\"+userId+"\\"+userId+"_"+fileName+"_history");
-		ArrayList<String> versions=new ArrayList<String>();
-		String content="";
+	public String[] getVersionContent(String userId, String fileName) {
+		File history = new File("F:\\Workspace\\BFServer\\" + userId + "\\" + userId + "_" + fileName + "_history");
+		ArrayList<String> versions = new ArrayList<String>();
+		String content = "";
 
 		try {
 			FileReader fr = new FileReader(history);
-			BufferedReader br=new BufferedReader(fr);
+			BufferedReader br = new BufferedReader(fr);
 			try {
-				String line=br.readLine();
-				while(line!=null){
-					
-						content=line.substring(line.indexOf('/')+1);
-						versions.add(content);
-						line=br.readLine();
+				String line = br.readLine();
+				while (line != null) {
+
+					content = line.substring(line.indexOf('/') + 1);
+					versions.add(content);
+					line = br.readLine();
 
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 
-		int size=versions.size();
-		String[] versionContent=(String[])versions.toArray(new String[size]);
+		int size = versions.size();
+		String[] versionContent = (String[]) versions.toArray(new String[size]);
 
 		return versionContent;
-		
+
 	}
 }
