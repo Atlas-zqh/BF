@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Timer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -26,9 +27,15 @@ import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 
 import rmi.RemoteHelper;
+import undo.PushTask;
+import undo.UndoManager;
 
 public class MainFrame extends JFrame {
-	private JTextArea textArea;
+	public static UndoManager undomanager=new UndoManager();;
+	PushTask pt=new PushTask();
+	Timer timer=new Timer();
+	
+	public static JTextArea textArea;
 	private JTextArea resultArea;
 	private JTextArea paramsArea;
 	private final int Height = 630;
@@ -50,6 +57,8 @@ public class MainFrame extends JFrame {
 
 	JMenu runMenu = new JMenu("Run");
 	JMenuItem executeMenuItem = new JMenuItem("Execute(R)");
+	JMenuItem undoMenuItem=new JMenuItem("Undo");
+	JMenuItem redoMenuItem=new JMenuItem("Redo");
 
 	static JMenu versionMenu = new JMenu("Version");
 
@@ -58,6 +67,7 @@ public class MainFrame extends JFrame {
 	static JMenuItem logout = new JMenuItem("Log out");
 
 	public MainFrame() {
+		timer.schedule(pt, 3000,3000);
 
 		// fileMenu.setMnemonic(KeyEvent.VK_X);
 		frame.setSize(Width, Height);
@@ -91,6 +101,8 @@ public class MainFrame extends JFrame {
 
 		menuBar.add(runMenu);
 		runMenu.add(executeMenuItem);
+		runMenu.add(undoMenuItem);
+		runMenu.add(redoMenuItem);
 
 		menuBar.add(versionMenu);
 		// Unfinished
@@ -123,8 +135,11 @@ public class MainFrame extends JFrame {
 		runMenuItem.addActionListener(new MenuItemActionListener());
 		exitMenuItem.addActionListener(new ExitActionListener());
 		executeMenuItem.addActionListener(new MenuItemActionListener());
+		undoMenuItem.addActionListener(new UndoActionListener());
+		redoMenuItem.addActionListener(new RedoActionListener());
 		login.addActionListener(new LoginActionListener());
 		logout.addActionListener(new LogoutActionListener());
+
 
 		// Code Area
 		textArea = new JTextArea(16, 58);
@@ -280,5 +295,25 @@ public class MainFrame extends JFrame {
 			}
 		}
 
+	}
+	
+	class UndoActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			textArea.setText(undomanager.undo());
+		}
+		
+	}
+	
+	class RedoActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			textArea.setText(undomanager.redo());
+		}
+		
 	}
 }
